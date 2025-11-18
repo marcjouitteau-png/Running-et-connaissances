@@ -1,0 +1,13 @@
+{
+  "name": "courir-autrement",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Site statique + API Resend",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "resend": "^3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Facture – Courir Autrement</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    --ink:#1b1b1b; --muted:#6b7280; --line:#e5e7eb; --accent:#0f766e; --bg:#f8fafc;
+  }
+  *{box-sizing:border-box}
+  body{font:14px/1.45 "Inter",system-ui,Arial,sans-serif; color:var(--ink); margin:0; background:var(--bg);}
+  .layout{max-width:1200px;margin:0 auto;padding:16px;display:grid;gap:16px;grid-template-columns: 360px 1fr;}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;position:sticky;top:12px;height:fit-content}
+  .panel h2{font-size:18px;margin:6px 0 12px}
+  .panel h3{font-size:14px;margin:16px 0 8px;color:#111827}
+  .panel label{display:block;font-weight:600;margin:10px 0 4px}
+  .panel input,.panel textarea,.panel select{
+    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit
+  }
+  .row{display:grid;gap:8px;grid-template-columns:1fr 1fr}
+  .muted{color:var(--muted)}
+  .btn{border:1px solid var(--accent);color:#fff;background:var(--accent);padding:9px 12px;border-radius:10px;cursor:pointer}
+  .btn.outline{background:#fff;color:var(--accent)}
+  .btn.ghost{background:#fff;border-color:var(--line);color:#111}
+  .btn.small{padding:6px 8px;font-size:12px;border-radius:8px}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .lines-editor table{width:100%;border-collapse:collapse;margin-top:6px}
+  .lines-editor th,.lines-editor td{border-bottom:1px solid var(--line);padding:6px;vertical-align:top;font-size:13px}
+  .lines-editor th{text-align:left}
+  .lines-editor input[type=number]{width:70px;text-align:right;padding:5px 6px}
+  .lines-editor textarea{width:100%;min-height:40px;resize:vertical}
+  .lines-editor button{white-space:nowrap}
+  .right{text-align:right}
+
+  /* A4 preview */
+  .sheet{max-width:210mm; min-height:297mm; margin:0 auto; background:#fff; padding:24mm 20mm; border:1px solid var(--line); border-radius:12px}
+  header{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:18mm;}
+  .brand h1{font:700 20px/1 "Cormorant Garamond",serif; margin:0;}
+  .brand small{color:var(--muted)}
+  .doc-meta{ text-align:right; }
+  .doc-meta h2{ margin:0 0 6px; font-size:22px; }
+  .doc-meta div{ color:var(--muted) }
+  .cols{display:flex; gap:24px; margin-bottom:12mm;}
+  .col{flex:1;}
+  h3{font:600 13px/1.2 inherit; margin:0 0 6px; color:#111827;}
+  .box{border:1px solid var(--line); border-radius:10px; padding:10px;}
+  .box p{margin:0; white-space:pre-line}
+  table#lines{width:100%; border-collapse:collapse; margin-top:4mm;}
+  #lines thead th{font-weight:600; text-align:left; border-bottom:2px solid var(--line); padding:8px 6px;}
+  #lines tbody td{border-bottom:1px solid var(--line); padding:8px 6px; vertical-align:top;}
+  #lines tfoot td{padding:6px; }
+  #lines tfoot tr:last-child td{font-weight:700; border-top:2px solid var(--line);}
+  .badge{display:inline-block; background:#ecfeff; border:1px solid #a5f3fc; color:#155e75; padding:4px 8px; border-radius:999px; font-size:12px;}
+  .foot{margin-top:10mm; display:flex; gap:24px; }
+  .foot .box{flex:1}
+
+  @page {
+    margin: 0;
+  }
+  @media print{
+    .layout{display:block}
+    .panel{display:none}
+    body{background:#fff}
+    .sheet{box-shadow:none;border:none;padding:20mm 18mm}
+    /* Empêche les footers automatiques si imprimante le permet */
+    body::after { content:""; display:none !important; }
+  }
+</style>
+
+</head>
+<body>
+
+<div class="layout">
+  <!-- ====== ÉDITEUR ====== -->
+  <aside class="panel">
+    <h2>Éditeur de facture</h2>
+
+    <h3>Vendeur</h3>
+    <label>Nom</label><input id="i_vendor_nom">
+    <label>Adresse</label><textarea id="i_vendor_addr" rows="3"></textarea>
+    <div class="row">
+      <div><label>Email</label><input id="i_vendor_mail"></div>
+      <div><label>Téléphone</label><input id="i_vendor_tel"></div>
+    </div>
+    <div class="row">
+      <div><label>SIRET</label><input id="i_vendor_siret"></div>
+      <div><label>TVA intra</label><input id="i_vendor_tvaIntra"></div>
+    </div>
+    <label><input type="checkbox" id="i_vendor_tvaApplicable"> Assujetti à la TVA</label>
+
+    <h3 style="margin-top:14px">Client</h3>
+    <label>Nom</label><input id="i_client_nom">
+    <label>Adresse</label><textarea id="i_client_addr" rows="3"></textarea>
+    <label>Email</label><input id="i_client_mail">
+
+    <h3 style="margin-top:14px">Facture</h3>
+    <div class="row">
+      <div><label>N°</label><input id="i_fact_num"></div>
+      <div><label>Date</label><input id="i_fact_date" type="date"></div>
+    </div>
+    <div class="row">
+      <div><label>Échéance</label><input id="i_fact_ech" type="date"></div>
+      <div></div>
+    </div>
+    <label>Objet</label><input id="i_fact_obj">
+
+    <h3 style="margin-top:14px">Acompte / solde</h3>
+    <div>
+      <label><input type="radio" name="fact_type" value="acompte" checked> Facture d’acompte</label><br>
+      <label><input type="radio" name="fact_type" value="solde"> Facture de solde</label><br>
+      <label><input type="radio" name="fact_type" value="total"> Facture totale</label>
+    </div>
+    <label style="margin-top:8px;">Montant total du séminaire (TTC)</label>
+    <input id="i_pay_total" type="number" step="0.01" min="0">
+    <label style="margin-top:8px;">Montant de l’acompte d’origine (TTC)</label>
+    <input id="i_pay_acompte" type="number" step="0.01" min="0">
+
+
+    <div class="lines-editor">
+      <h3 style="margin-top:14px">Lignes</h3>
+      <table>
+        <thead>
+          <tr><th style="width:50%">Désignation</th><th class="right">Qté</th><th class="right">PU HT</th><th class="right">TVA %</th><th></th></tr>
+        </thead>
+        <tbody id="linesEditorBody"></tbody>
+      </table>
+      <div class="actions">
+        <button class="btn small" id="addLine">+ Ajouter une ligne</button>
+        <button class="btn small ghost" id="clearLines">Vider</button>
+      </div>
+    </div>
+
+    <h3 style="margin-top:14px">Textes</h3>
+    <label>Conditions</label><textarea id="i_cond" rows="3"></textarea>
+    <label>Règlement</label><textarea id="i_regl" rows="3"></textarea>
+    <label>Mentions légales</label><textarea id="i_legal" rows="2"></textarea>
+
+    <div class="actions">
+      <button class="btn" id="btnPrint">Imprimer / PDF</button>
+      <button class="btn outline" id="dlJSON">Exporter JSON</button>
+      <label class="btn ghost" style="cursor:pointer">
+        Importer JSON <input type="file" id="upJSON" accept="application/json" style="display:none">
+      </label>
+      <button class="btn ghost" id="saveDraft">Sauvegarder</button>
+      <button class="btn ghost" id="clearDraft">Réinitialiser</button>
+    </div>
+    <div class="muted" id="status" style="margin-top:6px"></div>
+  </aside>
+
+  <!-- ====== APERÇU A4 ====== -->
+  <div class="sheet" id="sheet">
+    <header>
+      <div class="brand">
+        <h1>Running & Connaissances</h1>
+        <small class="muted" id="vendeur-ident"></small>
+      </div>
+      <div class="doc-meta">
+        <h2>FACTURE</h2>
+        <div id="facture-meta" class="muted"></div>
+        <div id="facture-refs"></div>
+      </div>
+    </header>
+
+    <div class="cols">
+      <div class="col">
+        <h3>Facturé à</h3>
+        <div class="box" id="client-box"></div>
+      </div>
+      <div class="col">
+        <h3>Émetteur</h3>
+        <div class="box" id="seller-box"></div>
+      </div>
+    </div>
+
+    <table id="lines">
+      <thead>
+        <tr>
+          <th style="width:50%">Désignation</th>
+          <th class="right">Qté</th>
+          <th class="right">PU HT</th>
+          <th class="right">TVA</th>
+          <th class="right">Montant HT</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+      <tfoot>
+        <tr><td colspan="4" class="right muted">Sous-total HT</td><td class="right" id="st-ht"></td></tr>
+        <tr id="tva-row"><td colspan="4" class="right muted">TVA</td><td class="right" id="st-tva"></td></tr>
+        <tr><td colspan="4" class="right">Total TTC</td><td class="right" id="st-ttc"></td></tr>
+      </tfoot>
+    </table>
+
+    <div class="foot">
+      <div class="box">
+        <h3 style="margin-bottom:6px">Conditions</h3>
+        <p id="conditions"></p>
+      </div>
+            <div class="box">
+        <h3 style="margin-bottom:6px">Règlement</h3>
+        <p id="reglement"></p>
+        <div id="payment-recap" style="margin-top:6px"></div>
+        <div id="tva-note" style="margin-top:6px"></div>
+      </div>
+
+    </div>
+
+    <div class="muted" style="margin-top:6mm" id="legal"></div>
+  </div>
+</div>
+
+<script>
+/* ===== Données par défaut / modifiables via l’éditeur ===== */
+const DEFAULT_DATA = {
+  vendeur: {
+    nom: "Running & Connaissances",
+    adresse: "12 rue des Peupliers\n75000 Paris\nFrance",
+    email: "runningconnaissances@gmail.com",
+    tel: "01 00 00 00 00",
+    siret: "123 456 789 00012",
+    tvaIntra: "",
+    tvaApplicable: false
+  },
+  client: {
+    nom: "Nom Prénom",
+    adresse: "Adresse client\nCode postal Ville\nPays",
+    email: "client@email.com"
+  },
+  facture: {
+    numero: "2025-001",
+    date: new Date().toISOString().slice(0,10),
+    echeance: "",
+    objet: "Inscription séminaire N4 – 05–07 avr. 2026"
+  },
+
+    payment: {
+    type: "acompte",          // "acompte" | "solde" | "total"
+    montantStageTTC: 390,     // montant total du séminaire
+    acompteOrigineTTC: 0      // acompte déjà réglé (utile pour la facture de solde)
+  },
+
+  lignes: [
+    { designation: "Séminaire N4 – 05–07 avr. 2026 – Trail (Etiolles)", qte: 1, puHT: 390, tva: 0 },
+  ],
+  conditions: "Paiement comptant à réception de facture.\nPénalités de retard : 3x le taux légal. Indemnité forfaitaire pour frais de recouvrement : 40 €.",
+  reglement: "Virement bancaire (IBAN) : FR76 3000 4000 5000 6000 7000 890\nBIC : PSSTFRPPXXX\nTitulaire : Running & Connaissances",
+  mentionsLegales: "Association / Entreprise individuelle – SIRET 123 456 789 00012. Si TVA non applicable : art. 293 B du CGI."
+};
+
+let DATA = JSON.parse(localStorage.getItem('factureDraft') || 'null') || DEFAULT_DATA;
+
+/* ===== Utilitaires ===== */
+const fmt = (n) => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(n);
+const fmtDate = (d) => d ? new Date(d).toLocaleDateString('fr-FR',{year:'numeric',month:'2-digit',day:'2-digit'}) : '';
+const $ = (sel) => document.querySelector(sel);
+
+/* ===== Rendu de l’APERÇU (feuille A4) ===== */
+function renderPreview(d){
+  const ident = [d.vendeur.adresse, d.vendeur.email, d.vendeur.tel].filter(Boolean).join(" · ");
+  document.getElementById('vendeur-ident').textContent = ident;
+
+  const meta = [`N° ${d.facture.numero}`, `Date ${fmtDate(d.facture.date)}`];
+  if (d.facture.echeance) meta.push(`Échéance ${fmtDate(d.facture.echeance)}`);
+  document.getElementById('facture-meta').textContent = meta.join(" · ");
+  document.getElementById('facture-refs').innerHTML =
+    d.facture.objet ? `<span class="badge">${d.facture.objet}</span>` : "";
+
+  document.getElementById('seller-box').innerHTML =
+    `<p><strong>${d.vendeur.nom}</strong>\n${d.vendeur.adresse}
+${d.vendeur.siret ? "\nSIRET : "+d.vendeur.siret : ""}${d.vendeur.tvaIntra ? "\nTVA intracom. : "+d.vendeur.tvaIntra : ""}</p>`;
+
+  document.getElementById('client-box').innerHTML =
+    `<p><strong>${d.client.nom}</strong>\n${d.client.adresse}
+${d.client.email ? "\n"+d.client.email : ""}</p>`;
+
+  const body = document.querySelector('#lines tbody');
+  body.innerHTML = "";
+  let stHT = 0, stTVA = 0;
+  const tvaApplicable = d.vendeur.tvaApplicable;
+
+  d.lignes.forEach((l) => {
+    const q = Number(l.qte||0), pu = Number(l.puHT||0);
+    const tvaRate = tvaApplicable ? Number(l.tva||0) : 0;
+    const mHT = q * pu;
+    const mTVA = mHT * (tvaRate/100);
+    stHT += mHT; stTVA += mTVA;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${l.designation || '<span class="muted">—</span>'}</td>
+      <td class="right">${q}</td>
+      <td class="right">${fmt(pu)}</td>
+      <td class="right">${tvaRate ? tvaRate.toFixed(0)+' %' : '—'}</td>
+      <td class="right">${fmt(mHT)}</td>`;
+    body.appendChild(tr);
+  });
+
+   const totalTTC = stHT + stTVA;
+  document.getElementById('st-ht').textContent = fmt(stHT);
+  document.getElementById('st-tva').textContent = fmt(stTVA);
+  document.getElementById('st-ttc').textContent = fmt(totalTTC);
+  document.getElementById('tva-row').style.display = (stTVA>0) ? "" : "none";
+
+  renderPaymentRecap(d, totalTTC);
+
+
+  document.getElementById('conditions').textContent = d.conditions || "";
+  document.getElementById('reglement').textContent = d.reglement || "";
+  document.getElementById('legal').textContent = d.mentionsLegales || "";
+
+  const note = document.getElementById('tva-note');
+  note.className = "muted";
+  note.textContent = d.vendeur.tvaApplicable
+    ? "TVA collectée selon les taux indiqués par ligne."
+    : "TVA non applicable – article 293 B du CGI.";
+}
+
+function renderPaymentRecap(d, totalTTC){
+  const box = document.getElementById('payment-recap');
+  if (!box) return;
+
+  const p = d.payment || {};
+  const type = p.type || 'acompte';
+  const stage = Number(p.montantStageTTC || 0);
+  const acompteOrig = Number(p.acompteOrigineTTC || 0);
+
+  let html = '';
+
+  if (type === 'acompte') {
+    const soldeIndicatif = stage ? Math.max(stage - totalTTC, 0) : null;
+    html += `<p><strong>Facture d’acompte</strong></p>`;
+    if (stage) html += `<p>Montant total du séminaire : <strong>${fmt(stage)}</strong></p>`;
+    html += `<p>Acompte facturé (cette facture) : <strong>${fmt(totalTTC)}</strong></p>`;
+    if (soldeIndicatif !== null)
+      html += `<p>Solde indicatif restant : <strong>${fmt(soldeIndicatif)}</strong></p>`;
+  } else if (type === 'solde') {
+    html += `<p><strong>Facture de solde</strong></p>`;
+    if (stage) html += `<p>Montant total du séminaire : <strong>${fmt(stage)}</strong></p>`;
+    if (acompteOrig) html += `<p>Acompte déjà versé : <strong>${fmt(acompteOrig)}</strong></p>`;
+    html += `<p>Solde à régler (cette facture) : <strong>${fmt(totalTTC)}</strong></p>`;
+  } else { // facture totale
+    if (!totalTTC) { box.innerHTML = ''; return; }
+    html += `<p><strong>Facture totale</strong></p>`;
+    html += `<p>Montant du séminaire : <strong>${fmt(totalTTC)}</strong></p>`;
+  }
+
+  box.innerHTML = html;
+}
+
+
+/* ===== Éditeur : remplir les champs à partir de DATA ===== */
+function fillEditorFromData(){
+  // vendeur
+  $('#i_vendor_nom').value = DATA.vendeur.nom || '';
+  $('#i_vendor_addr').value = DATA.vendeur.adresse || '';
+  $('#i_vendor_mail').value = DATA.vendeur.email || '';
+  $('#i_vendor_tel').value = DATA.vendeur.tel || '';
+  $('#i_vendor_siret').value = DATA.vendeur.siret || '';
+  $('#i_vendor_tvaIntra').value = DATA.vendeur.tvaIntra || '';
+  $('#i_vendor_tvaApplicable').checked = !!DATA.vendeur.tvaApplicable;
+
+  // client
+  $('#i_client_nom').value = DATA.client.nom || '';
+  $('#i_client_addr').value = DATA.client.adresse || '';
+  $('#i_client_mail').value = DATA.client.email || '';
+
+  // facture
+  $('#i_fact_num').value = DATA.facture.numero || '';
+  $('#i_fact_date').value = DATA.facture.date || '';
+  $('#i_fact_ech').value = DATA.facture.echeance || '';
+  $('#i_fact_obj').value = DATA.facture.objet || '';
+
+  // textes
+  
+  $('#i_cond').value = DATA.conditions || '';
+  $('#i_regl').value = DATA.reglement || '';
+  $('#i_legal').value = DATA.mentionsLegales || '';
+
+  // paiement
+  const pay = DATA.payment || {};
+  $('#i_pay_total').value = pay.montantStageTTC ?? '';
+  $('#i_pay_acompte').value = pay.acompteOrigineTTC ?? '';
+  const type = pay.type || 'acompte';
+  document.querySelectorAll('input[name="fact_type"]').forEach(r => {
+    r.checked = (r.value === type);
+  });
+
+
+
+  // lignes
+  renderLinesEditor();
+}
+
+/* ===== Éditeur : lignes ===== */
+function renderLinesEditor(){
+  const tb = $('#linesEditorBody');
+  tb.innerHTML = '';
+
+  DATA.lignes.forEach((l, idx) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><textarea rows="2" data-k="designation">${l.designation||''}</textarea></td>
+      <td class="right"><input type="number" step="1" min="0" data-k="qte" value="${l.qte||0}"></td>
+      <td class="right"><input type="number" step="0.01" min="0" data-k="puHT" value="${l.puHT||0}"></td>
+      <td class="right"><input type="number" step="1" min="0" data-k="tva" value="${l.tva||0}"></td>
+      <td class="right"><button class="btn small ghost" data-del="${idx}">Suppr.</button></td>
+    `;
+    tb.appendChild(tr);
+  });
+
+  // saisie fluide : met à jour DATA + l’aperçu uniquement
+  tb.querySelectorAll('textarea, input').forEach((inp) => {
+    inp.addEventListener('input', (e) => {
+      const tr = e.target.closest('tr');
+      const idx = Array.from(tb.children).indexOf(tr);
+      const key = e.target.dataset.k;
+      let val = e.target.value;
+      if (['qte','puHT','tva'].includes(key)) val = Number(val);
+      DATA.lignes[idx][key] = val;
+      saveDraft(false);
+      renderPreview(DATA);  // met à jour la facture, mais ne touche pas l’éditeur
+    });
+  });
+
+  tb.querySelectorAll('button[data-del]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = Number(btn.dataset.del);
+      DATA.lignes.splice(idx,1);
+      saveDraft(false);
+      renderLinesEditor();
+      renderPreview(DATA);
+    });
+  });
+}
+
+/* ===== Ajout / vider les lignes ===== */
+$('#addLine').addEventListener('click', () => {
+  DATA.lignes.push({ designation:"", qte:1, puHT:0, tva: (DATA.vendeur.tvaApplicable?20:0) });
+  saveDraft(false);
+  renderLinesEditor();
+  renderPreview(DATA);
+});
+
+$('#clearLines').addEventListener('click', () => {
+  if (confirm('Supprimer toutes les lignes ?')) {
+    DATA.lignes = [];
+    saveDraft(false);
+    renderLinesEditor();
+    renderPreview(DATA);
+  }
+});
+
+/* ===== Bind des champs simples ===== */
+[
+  ['#i_vendor_nom','vendeur','nom'],
+  ['#i_vendor_addr','vendeur','adresse'],
+  ['#i_vendor_mail','vendeur','email'],
+  ['#i_vendor_tel','vendeur','tel'],
+  ['#i_vendor_siret','vendeur','siret'],
+  ['#i_vendor_tvaIntra','vendeur','tvaIntra'],
+  ['#i_vendor_tvaApplicable','vendeur','tvaApplicable','checkbox'],
+
+  ['#i_client_nom','client','nom'],
+  ['#i_client_addr','client','adresse'],
+  ['#i_client_mail','client','email'],
+
+  ['#i_fact_num','facture','numero'],
+  ['#i_fact_date','facture','date'],
+  ['#i_fact_ech','facture','echeance'],
+  ['#i_fact_obj','facture','objet'],
+
+    ['#i_pay_total','payment','montantStageTTC'],
+  ['#i_pay_acompte','payment','acompteOrigineTTC'],
+  ['#i_cond','conditions'],
+  ['#i_regl','reglement'],
+  ['#i_legal','mentionsLegales'],
+].forEach(([sel, k1, k2, type])=>{
+ const el = $(sel);
+  el.addEventListener(type==='checkbox'?'change':'input', () => {
+    if (k2) {
+      let val = (type==='checkbox') ? el.checked : el.value;
+      // Les champs de paiement sont numériques
+      if (k1 === 'payment' && sel.startsWith('#i_pay_')) {
+        val = parseFloat(val || '0') || 0;
+      }
+      DATA[k1][k2] = val;
+    } else {
+      DATA[k1] = el.value;
+    }
+
+    if (sel==='#i_vendor_tvaApplicable') {
+      if (!el.checked) DATA.lignes = DATA.lignes.map(l => ({...l, tva:0}));
+      renderLinesEditor();
+    }
+    saveDraft(false);
+    renderPreview(DATA);
+  });
+});
+
+document.querySelectorAll('input[name="fact_type"]').forEach(r => {
+  r.addEventListener('change', () => {
+    if (!r.checked) return;
+    DATA.payment = DATA.payment || {};
+    DATA.payment.type = r.value;
+    saveDraft(false);
+    renderPreview(DATA);
+  });
+});
+
+
+/* ===== Sauvegarde / chargement ===== */
+function saveDraft(show=true){
+  localStorage.setItem('factureDraft', JSON.stringify(DATA));
+  if (show) $('#status').textContent = 'Brouillon sauvegardé localement.';
+}
+
+$('#saveDraft').addEventListener('click', ()=> saveDraft(true));
+
+$('#clearDraft').addEventListener('click', ()=>{
+  if (confirm('Réinitialiser la facture aux valeurs par défaut ?')) {
+    DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    saveDraft(false);
+    fillEditorFromData();
+    renderPreview(DATA);
+    $('#status').textContent = 'Réinitialisé.';
+  }
+});
+
+// Export / Import JSON
+$('#dlJSON').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(DATA, null, 2)], {type:"application/json"});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `facture-${DATA.facture.numero || 'draft'}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+$('#upJSON').addEventListener('change', async (e)=>{
+  const f = e.target.files[0]; if (!f) return;
+  try{
+    const text = await f.text();
+    DATA = JSON.parse(text);
+    saveDraft(false);
+    fillEditorFromData();
+    renderPreview(DATA);
+    $('#status').textContent = 'Facture importée.';
+  }catch(err){
+    alert('Fichier JSON invalide.');
+  }
+});
+
+// Impression
+$('#btnPrint').addEventListener('click', ()=> window.print());
+
+// Premier rendu
+fillEditorFromData();
+renderPreview(DATA);
+</script>
+
+
+</body>
+</html>

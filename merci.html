@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Merci – Running & connaissances</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .thanks-wrap{min-height:60vh;display:grid;place-items:center;padding:40px 16px;}
+    .thanks-card{max-width:760px;background:#fff;border:1px solid #eee;border-radius:16px;padding:28px;}
+    .thanks-card h1{margin:0 0 12px 0}
+    .thanks-card p{margin:8px 0}
+    .actions{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand"><span class="logo"></span><span>Running & Connaissances</span></a>
+    </div>
+  </header>
+
+  <main class="thanks-wrap">
+  <div class="thanks-card">
+    <h1>Merci pour ton inscription ✅</h1>
+
+    <p id="seminaire-choisi"></p>
+
+    <p>Nous reviendrons vers toi <strong>très prochainement</strong> pour&nbsp;:</p>
+    <ul>
+      <li>te confirmer la disponibilité du séminaire choisi,</li>
+      <li>te transmettre les modalités de règlement.</li>
+    </ul>
+
+    <p class="muted">
+      Si tu ne reçois rien sous 10&nbsp;jours ouvrés, jette un œil à tes spams ou écris-nous à 
+      <a href="mailto:runningconnaissances@gmail.com">runningconnaissances@gmail.com</a>.
+    </p>
+
+    <div class="actions">
+      <a class="btn" href="index.html">Retour à l’accueil</a>
+      <a class="btn outline" href="programme.html">Voir le programme</a>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const seminaire = sessionStorage.getItem('dernierSeminaire');
+    const cible = document.getElementById('seminaire-choisi');
+    if (seminaire && cible) {
+      cible.innerHTML = `Nous avons bien reçu ta demande concernant le séminaire du&nbsp;<strong>${seminaire}</strong>.`;
+      sessionStorage.removeItem('dernierSeminaire');
+    } else {
+      cible.textContent = "Nous avons bien reçu ta demande d’inscription.";
+    }
+  });
+  </script>
+</main>
+
+
+  <footer>
+    <div class="container footgrid">
+      <p>© Running & connaissances</p>
+    </div>
+  </footer>
+</body>
+</html>

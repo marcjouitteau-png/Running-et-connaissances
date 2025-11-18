@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inscription – Courir Autrement</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* petits styles de formulaire pour la lisibilité */
+    form .row { display:grid; gap:12px; grid-template-columns: 1fr 1fr; }
+    form .row-3 { display:grid; gap:12px; grid-template-columns: 1fr 1fr 1fr; }
+    form .full { grid-column: 1/-1; }
+    form label { display:block; font-weight:600; margin:6px 0 6px; }
+    form input, form select, form textarea {
+      width:100%; padding:12px; border-radius:12px; border:1px solid var(--beige-200);
+      background:#fff;
+    }
+    fieldset { border:1px solid color-mix(in srgb, var(--ink) 6%, white); border-radius:16px; padding:16px; margin:18px 0; }
+    fieldset legend { padding:0 8px; font-weight:700; font-family:"Cormorant Garamond", serif; }
+    .hint { font-size:.9rem; color:var(--muted); margin-top:4px; }
+    .checks { display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
+    .checks label { font-weight:500; display:inline-flex; align-items:center; gap:6px; margin:0; }
+    .actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
+  </style>
+</head>
+<body data-page="infos">
+
+<!-- Header (identique aux autres pages) -->
+<header class="site-header" id="siteHeader" aria-label="Navigation principale">
+  <div class="container nav">
+    <a href="index.html" class="brand" aria-label="Accueil">
+      <span class="logo" aria-hidden="true"></span>
+      <span>Running & Connaissances</span>
+    </a>
+    <nav aria-label="Sections">
+      <a href="philosophie.html" data-page="philosophie">Philosophie</a>
+      <a href="experience.html" data-page="experience">L’expérience</a>
+      <a href="programme.html" data-page="programme">Programme</a>
+      <a href="lieu.html" data-page="lieu">Le lieu</a>
+      <a href="equipe.html" data-page="equipe">L’équipe</a>
+      <a href="infos.html" class="btn outline" data-page="infos">Infos</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero has-bg" style="background-image:url('images/jardin 4.png')">
+    <h1>Inscription au séminaire</h1>
+    <p>Merci de remplir ce questionnaire : il nous permet de personnaliser votre expérience.</p>
+  </div>
+</section>
+
+<section class="section-muted">
+  <div class="container">
+    <div class="card">
+      <h2 style="margin-top:0;">Formulaire d’inscription</h2>
+      <p class="muted">Durée ~ 3 à 5 minutes. Les champs essentiels sont marqués <span aria-hidden="true">*</span>.</p>
+
+    <!-- ===== ENVOI FORMSPREE : FORMULAIRE UNIQUE ===== -->
+<form id="form-inscription" method="POST" action="https://formspree.io/f/mqawawpl">
+  <!-- Métadonnées pour l’e-mail reçu -->
+  <input type="hidden" name="_subject" value="Nouvelle inscription — Running & Connaissances">
+  <!-- Honeypot anti-spam reconnu par Formspree -->
+  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0">
+
+  <!-- ✅ Redirection automatique après envoi -->
+  <input type="hidden" name="_next" value="merci.html">
+
+  <!-- 1) Informations personnelles -->
+  <fieldset>
+    <legend>1) Informations personnelles</legend>
+    <div class="row">
+      <div>
+        <label for="nom">Nom et prénom <span aria-hidden="true">*</span></label>
+        <input id="nom" name="Nom et prénom" required>
+      </div>
+      <div>
+        <label for="email">Adresse e-mail <span aria-hidden="true">*</span></label>
+        <!-- IMPORTANT : name="email" pour que Formspree mette le Reply-To -->
+        <input id="email" name="email" type="email" required>
+      </div>
+      <div>
+        <label for="tel">Numéro de téléphone</label>
+        <input id="tel" name="Téléphone" type="tel" placeholder="+33 …">
+      </div>
+      <div>
+        <label for="naissance">Date de naissance</label>
+        <input id="naissance" name="Date de naissance" type="date">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="full">
+        <label for="rue">Adresse – Rue / Avenue</label>
+        <input id="rue" name="Adresse - Rue">
+      </div>
+      <div>
+        <label for="ville">Ville</label>
+        <input id="ville" name="Ville">
+      </div>
+      <div>
+        <label for="cp">Code postal</label>
+        <input id="cp" name="Code postal">
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- 2) Pratique -->
+  <fieldset>
+    <legend>2) Informations sur la pratique</legend>
+
+    <label>Depuis combien de temps courez-vous ?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="Ancienneté course" value="Moins d’un an"> Moins d’un an</label>
+      <label><input type="radio" name="Ancienneté course" value="1 à 3 ans"> 1 à 3 ans</label>
+      <label><input type="radio" name="Ancienneté course" value="3 à 5 ans"> 3 à 5 ans</label>
+      <label><input type="radio" name="Ancienneté course" value="Plus de 5 ans"> Plus de 5 ans</label>
+    </div>
+
+    <label style="margin-top:10px;">Fréquence d’entraînement (2 derniers mois)</label>
+    <div class="radio-group">
+      <label><input type="radio" name="Fréquence hebdo" value="0 à 1 séance"> 0 à 1 séance</label>
+      <label><input type="radio" name="Fréquence hebdo" value="2 à 3 séances"> 2 à 3 séances</label>
+      <label><input type="radio" name="Fréquence hebdo" value="4 séances et plus"> 4 séances et plus</label>
+    </div>
+
+    <label for="course-prepa" style="margin-top:10px;">Préparez-vous une course actuellement ? (distance, trail/route, date)</label>
+    <textarea id="course-prepa" name="Course en préparation" rows="3"></textarea>
+
+    <label style="margin-top:10px;">Êtes-vous en club / accompagné par un coach?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="Club ou coach" value="Oui"> Oui</label>
+      <label><input type="radio" name="Club ou coach" value="Non"> Non</label>
+    </div>
+  </fieldset>
+
+  <!-- 3) Références -->
+  <fieldset>
+    <legend>3) Performances récentes (24 derniers mois)</legend>
+    <div class="row">
+      <div class="full">
+        <label for="ref_10k">Référence 10 km</label>
+        <input id="ref_10k" name="Référence 10 km" placeholder="h:mm:ss">
+      </div>
+      <div class="full">
+        <label for="ref_21k">Référence Semi</label>
+        <input id="ref_21k" name="Référence Semi" placeholder="h:mm:ss">
+      </div>
+      <div class="full">
+        <label for="ref_42k">Référence Marathon</label>
+        <input id="ref_42k" name="Référence Marathon" placeholder="h:mm:ss">
+      </div>
+      <div class="full">
+        <label for="ref_itra">Indice ITRA</label>
+        <input id="ref_itra" name="Indice ITRA" placeholder="ex. 410">
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- 4) Choix des dates -->
+  <fieldset>
+    <legend>4) Choix du séminaire</legend>
+    <p class="hint">Choisis ta date principale (pré-remplie) et, si tu veux, deux dates alternatives.</p>
+
+    <div class="seminaire-grid">
+      <div>
+        <label for="choice1">Choix 1 (principal)</label>
+        <select id="choice1" name="choice1" required></select>
+      </div>
+      <div>
+        <label for="choice2">Choix 2 (optionnel)</label>
+        <select id="choice2" name="choice2"></select>
+      </div>
+      <div>
+        <label for="choice3">Choix 3 (optionnel)</label>
+        <select id="choice3" name="choice3"></select>
+      </div>
+    </div>
+
+    <div class="niveau-field">
+      <label for="level">Niveau</label>
+      <input id="level" name="level" readonly>
+    </div>
+
+
+<label style="margin-top:10px;">Choix de la chambre</label>
+    <div class="radio-group">
+      <label><input type="radio" name="chambres" value="chambre solo"> chambre solo - 990€</label>
+      <label><input type="radio" name="chambres" value="chambre duo - lit simple"> chambre duo, lit simple - 950€</label>
+      <label><input type="radio" name="chambres" value="chambre duo - lit double"> chambre duo, lit double - 1900€ pour 2</label>
+      <label><input type="radio" name="chambres" value="chambré -  4 lits simple"> chambré, 4 lits simple - 890€</label>
+    </div>
+
+  </fieldset>
+
+  <!-- 5) Préparation / kiné -->
+  <fieldset>
+    <legend>5) Préparation – intervention kiné et conférence</legend>
+    <label for="Conférence" style="margin-top:10px;">Quel sujet aimerais-tu aborder durant les conférences ? (Préventions de certaines blessures? Lesquelles? - Coaching mental ? - Les exosquellettes ? - autres?)</label>
+    <textarea id="Conférence" name="Conférence libre" rows="3"></textarea>
+
+    <label for="douleurs" style="margin-top:10px;">Blessures / douleurs récurrentes</label>
+    <textarea id="douleurs" name="Douleurs récurrentes" rows="3"></textarea>
+  </fieldset>
+
+  <!-- 6) Questionnaire libre -->
+  <fieldset>
+    <legend>6) Questionnaire libre – soirée découverte du groupe le premier soir</legend>
+    <label for="course-emblematique">Course la plus emblématique / extravagante / particulière à laquelle tu as participé.</label>
+    <textarea id="course-emblematique" name="Course emblématique" rows="2"></textarea>
+
+    <label for="fait-drole" style="margin-top:10px;">Fait de course le plus drôle (vécu ou vu).</label>
+    <textarea id="fait-drole" name="Fait de course drôle" rows="2"></textarea>
+
+    <label for="anecdote" style="margin-top:10px;">Anecdote à partager</label>
+    <textarea id="anecdote" name="Anecdote" rows="2"></textarea>
+  </fieldset>
+
+  <!-- 7) Informations complémentaires -->
+  <fieldset>
+    <legend>7) Informations complémentaires</legend>
+
+    <label>Souhaitez-vous recevoir les informations sur le séminaire par :</label>
+    <div class="radio-group">
+      <label><input type="checkbox" name="Infos par" value="E-mail"> E-mail</label>
+      <label><input type="checkbox" name="Infos par" value="SMS"> SMS</label>
+      <label><input type="checkbox" name="Infos par" value="Les deux"> Les deux</label>
+    </div>
+
+    <label for="remarques" style="margin-top:10px;">Autres remarques / besoins spécifiques (régime, allergies…)</label>
+    <textarea id="remarques" name="Remarques" rows="3"></textarea>
+
+    <div class="checks" style="margin-top:10px;">
+      <label><input type="checkbox" name="Attestation" value="J’atteste exactitude"> J’atteste que les informations fournies sont exactes.</label>
+      <label><input type="checkbox" name="Contact OK" value="J’accepte contact"> J’accepte d’être contacté par les organisateurs.</label>
+    </div>
+  </fieldset>
+
+  <div class="actions">
+    <button class="btn" type="submit">Envoyer mon inscription</button>
+    <a class="btn outline" href="infos.html">Retour aux informations</a>
+  </div>
+</form>
+
+<script>
+(function enhanceFormspreeEmail(){
+  const form = document.getElementById('form-inscription');
+  if (!form) return;
+
+  // Joli message inline si besoin
+  function showStatus(ok, msg){
+    let el = document.getElementById('send-status');
+    if (!el){
+      el = document.createElement('div');
+      el.id = 'send-status';
+      el.style.cssText = 'margin-top:12px;padding:12px;border-radius:12px;';
+      form.querySelector('.actions')?.insertAdjacentElement('beforebegin', el);
+    }
+    el.textContent = msg;
+    el.style.background = ok ? '#ecffe9' : '#ffeaea';
+    el.style.border = '1px solid ' + (ok ? '#2aa83d' : '#c62828');
+    el.style.color = ok ? '#1e5f2b' : '#7a1414';
+  }
+
+  const months = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+  const d2 = x => String(x).padStart(2,"0");
+  const fmtRange = (s,e)=>{
+    const ds=new Date(s+"T00:00:00"), de=new Date(e+"T00:00:00");
+    const same = ds.getMonth()===de.getMonth() && ds.getFullYear()===de.getFullYear();
+    return same
+      ? `${d2(ds.getDate())}–${d2(de.getDate())} ${months[de.getMonth()]} ${de.getFullYear()}`
+      : `${d2(ds.getDate())} ${months[ds.getMonth()]} ${ds.getFullYear()} → ${d2(de.getDate())} ${months[de.getMonth()]} ${de.getFullYear()}`;
+  };
+  const pretty = (val)=>{
+    if (!val) return '';
+    const [start,end,level,title] = val.split('|');
+    const range = (start&&end) ? fmtRange(start,end) : '';
+    const lv = level ? ` • N${level}` : '';
+    const tt = title ? ` • ${title}` : '';
+    return [range, lv, tt].filter(Boolean).join('');
+  };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // on gère l’envoi pour rediriger proprement
+
+    // 1) Construire la payload
+    const fd = new FormData(form);
+
+    // versions lisibles des choix
+    ['choice1','choice2','choice3'].forEach((id, i) => {
+      const sel = form.querySelector('#'+id);
+      const val = sel?.value || '';
+      fd.append(`Choix ${i+1} (lisible)`, pretty(val) || '(non renseigné)');
+    });
+
+    // meta utiles
+    fd.append('Horodatage', new Date().toISOString());
+    fd.append('Navigateur', navigator.userAgent);
+
+    // Reply-To
+    const email = form.querySelector('#email')?.value || '';
+    if (email) fd.set('_replyto', email);
+
+    // 2) Envoi
+    const endpoint = form.getAttribute('action');
+    try {
+      const resp = await fetch(endpoint, { method:'POST', headers:{Accept:'application/json'}, body:fd });
+      if (resp.ok) {
+        // Nettoyage local
+        try { localStorage.removeItem('inscriptionDraft'); } catch(e){}
+        try { localStorage.removeItem('perfData'); } catch(e){}
+
+        // ✅ Sauvegarde du séminaire choisi
+        const choice1Readable = pretty(form.querySelector('#choice1')?.value || '');
+        sessionStorage.setItem('dernierSeminaire', choice1Readable);
+
+        // Redirection merci
+        window.location.href = 'merci.html';
+        return;
+      } else {
+        const data = await resp.json().catch(()=> ({}));
+        const err = data?.errors?.map(e=>e.message).join(' · ') || 'Erreur inconnue.';
+        showStatus(false, '⚠️ Envoi impossible. ' + err);
+      }
+    } catch (err) {
+      // Fallback : on laisse la soumission native faire (si offline/CORS improbable)
+      form.removeEventListener('submit', arguments.callee);
+      form.submit();
+    }
+  });
+})();
+</script>
+
+
+
+    </div>
+
+    <p class="muted" style="margin-top:10px">
+      
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="container footgrid">
+    <div>
+      <h3 style="color:var(--white);margin:0 0 5px;">Running & Connaissances</h3>
+      <span style="color:color-mix(in srgb,var(--white) 85%, transparent);">Courir, respirer, échanger.</span><br>
+      <span style="color:color-mix(in srgb,var(--white) 85%, transparent);">Une parenthèse pour progresser.</span>
+    </div>
+
+    <div>
+      <h4 style="margin:0 0 10px;">Navigation</h4>
+      <p>
+        <a href="philosophie.html">Philosophie</a> ·
+        <a href="experience.html">L’expérience</a> ·
+        <a href="programme.html">Programme</a> ·
+        <a href="lieu.html">Le lieu</a> ·
+        <a href="equipe.html">L’équipe</a>
+      </p>
+    </div>
+
+  <div class="footer-contact">
+  <div>
+    <h4 style="margin:0 0 10px;">Contact</h4>
+    <p>
+      <a href="mailto:runningconnaissances@gmail.com">runningconnaissances@gmail.com</a><br/>
+      Tel 01 XX XX XX XX
+    </p>
+  </div>
+    <img src="images/logo.png" class="footer-logo">
+  </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+
+<script>
+
+
+(function hydrateInscription(){
+
+   // ⬇️ ajoute cette ligne tout en haut de la fonction
+  const form = document.getElementById('form-inscription');
+
+  // 1) Récupère la liste depuis localStorage
+  let LIST = [];
+  try {
+    const raw = localStorage.getItem('seminaires');
+    if (raw) LIST = JSON.parse(raw);
+  } catch(e){ LIST = []; }
+
+  // 2) Fallback: si vide et que script.js est chargé ici, prends window.SEMINAIRES
+  if ((!LIST || !LIST.length) && Array.isArray(window.SEMINAIRES)) {
+    LIST = window.SEMINAIRES;
+  }
+
+  // 3) Params URL (si on vient du calendrier)
+  const qs = new URLSearchParams(location.search);
+  const selStart = qs.get('start');
+  const selEnd   = qs.get('end');
+  const selLevel = qs.get('level');
+  const selTitle = qs.get('title');
+
+  // utilitaires
+  const months = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+  const d2 = x => String(x).padStart(2,"0");
+  const fmtRange = (s,e)=>{
+    const ds=new Date(s+"T00:00:00"), de=new Date(e+"T00:00:00");
+    const same = ds.getMonth()===de.getMonth() && ds.getFullYear()===de.getFullYear();
+    return same
+      ? `${d2(ds.getDate())}–${d2(de.getDate())} ${months[de.getMonth()]} ${de.getFullYear()}`
+      : `${d2(ds.getDate())} ${months[ds.getMonth()]} ${ds.getFullYear()} → ${d2(de.getDate())} ${months[de.getMonth()]} ${de.getFullYear()}`;
+  };
+  const optionLabel = ev => `${fmtRange(ev.start,ev.end)} · N${ev.level} · ${ev.title}`;
+  const optionValue = ev => `${ev.start}|${ev.end}|${ev.level}|${ev.title}`;
+
+  // éléments du form
+  const s1 = document.getElementById('choice1');
+  const s2 = document.getElementById('choice2');
+  const s3 = document.getElementById('choice3');
+  const levelField = document.getElementById('level');
+
+  // remplissage
+  function fillSelect(sel, withEmpty){
+    if (!sel) return;
+    sel.innerHTML = ""; // nettoie d'éventuels restes
+    if (withEmpty){
+      const o = document.createElement('option');
+      o.value=""; o.textContent="— Aucun —";
+      sel.appendChild(o);
+    }
+    (LIST||[]).forEach(ev=>{
+      const o = document.createElement('option');
+      o.value = optionValue(ev);
+      o.textContent = optionLabel(ev);
+      sel.appendChild(o);
+    });
+  }
+  fillSelect(s1, false);
+  fillSelect(s2, true);
+  fillSelect(s3, true);
+
+  // pré-sélection Choix 1
+  if (s1 && selStart && selEnd){
+    const prefix = `${selStart}|${selEnd}|`;
+    let match = [...s1.options].find(o=>o.value.startsWith(prefix));
+    // si aucune option trouvée, créer une option "synthétique" avec les infos URL
+    if (!match){
+      const fake = document.createElement('option');
+      fake.value = `${selStart}|${selEnd}|${selLevel||''}|${selTitle||''}`;
+      const label = `${fmtRange(selStart, selEnd)}${selLevel?` · N${selLevel}`:''}${selTitle?` · ${selTitle}`:''}`;
+      fake.textContent = label;
+      s1.insertBefore(fake, s1.firstChild);
+      match = fake;
+    }
+    s1.value = match.value;
+  }
+
+  // si pas de perf, afficher le niveau du séminaire
+  if (levelField && selLevel && !levelField.value) levelField.value = `N${selLevel}`;
+
+  // --- Pré-remplir depuis les performances (localStorage) ---
+  let perf = null;
+  try { perf = JSON.parse(localStorage.getItem('perfData') || 'null'); } catch(e){ perf=null; }
+  if (perf){
+    if(levelField && perf.level) levelField.value = `N${perf.level}`;
+
+    const ref10 = document.getElementById('ref_10k');
+    const ref21 = document.getElementById('ref_21k');
+    const ref42 = document.getElementById('ref_42k');
+    const refI  = document.getElementById('ref_itra');
+    if(ref10) ref10.value = perf.t10kRaw || "";
+    if(ref21) ref21.value = perf.t21kRaw || "";
+    if(ref42) ref42.value = perf.t42kRaw || "";
+    if(refI)  refI.value  = perf.itraRaw || "";
+
+    // Champs cachés si besoin
+    function ensureHidden(id, label, val){
+      if(document.getElementById(id) || !form) return;
+      const input = document.createElement('input');
+      input.type = 'hidden'; input.id=id; input.name=label; input.value=val||"";
+      form.appendChild(input);
+    }
+    ensureHidden('hidden_ref_10k','Référence 10 km', perf.t10kRaw);
+    ensureHidden('hidden_ref_21k','Référence Semi', perf.t21kRaw);
+    ensureHidden('hidden_ref_42k','Référence Marathon', perf.t42kRaw);
+    ensureHidden('hidden_ref_itra','Indice ITRA', perf.itraRaw);
+
+    const lbl = document.querySelector('label[for="level"]');
+    if(lbl) lbl.innerHTML = 'Niveau <span style="font-weight:600;color:#2f6f4f">(basé sur vos performances)</span>';
+  }
+
+  // Nettoyer perfData après envoi (optionnel)
+  if(form){
+    form.addEventListener('submit', ()=> { try { localStorage.removeItem('perfData'); } catch(e){} });
+  }
+})();
+</script>
+
+
+
+</body>
+</html>

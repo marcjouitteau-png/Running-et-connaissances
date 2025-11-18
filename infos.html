@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Infos & Réservation – Courir Autrement</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="infos">
+    <header class="site-header" id="siteHeader" aria-label="Navigation principale">
+  <div class="container nav">
+    <a href="index.html" class="brand" aria-label="Accueil">
+      <span class="logo" aria-hidden="true"></span>
+      <span>Running & Connaissances</span>
+    </a>
+    <nav aria-label="Sections">
+      <a href="philosophie.html" data-page="philosophie">Philosophie</a>
+      <a href="experience.html" data-page="experience">L’expérience</a>
+      <a href="programme.html" data-page="programme">Programme</a>
+      <a href="lieu.html" data-page="lieu">Le lieu</a>
+      <a href="equipe.html" data-page="equipe">L’équipe</a>
+      <a href="infos.html" class="btn outline" data-page="infos">Découvrir l’expérience</a>
+    </nav>
+  </div>
+</header>
+
+<header class="site-header" id="siteHeader">…</header>
+
+<section class="hero has-bg" style="background-image:url('images/jardin 4.png')">
+  <div class="hero-inner container">
+    <h1>Infos & réservation</h1>
+    <p>Groupes de 10–14 personnes · Séjour 3 jours / 2 nuits</p>
+  </div>
+</section>
+
+
+
+    <!-- CALCULATEUR DE NIVEAU -->
+    <div class="card" style="margin-top:24px">
+      <h3 style="margin-top:0">Calcule ton niveau</h3>
+      <p class="muted">Entre une ou plusieurs références sur les 24 derniers mois (format <em>h:mm:ss</em> pour les temps).</p>
+      <form id="level-form" class="level-form">
+        <div class="row">
+          <div>
+            <label for="t10k">10 km</label>
+            <input id="t10k" class="time-mask" inputmode="numeric" placeholder="h:mm:ss">
+          </div>
+          <div>
+            <label for="t21k">Semi</label>
+            <input id="t21k" class="time-mask" inputmode="numeric" placeholder="h:mm:ss">
+          </div>
+          <div>
+            <label for="t42k">Marathon</label>
+            <input id="t42k" class="time-mask" inputmode="numeric" placeholder="h:mm:ss">
+          </div>
+          <div>
+            <label for="itra">Indice ITRA</label>
+            <input id="itra" type="number" min="0" step="1" placeholder="ex. 410">
+          </div>
+        </div>
+        <button class="btn" type="submit">Proposer un niveau</button>
+        <span id="level-result" class="pill"></span>
+      </form>
+      <p class="hint">La proposition est indicative. Si tu hésites entre deux niveaux, choisis le plus prudent.</p>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="seminaires" class="section-muted">
+  <div class="container">
+    <div class="kicker">Planning des séminaires</div>
+    <h2>Choisis tes dates (par niveau)</h2>
+
+    <!-- Légende niveaux -->
+    <div class="legend">
+      <span class="chip lvl-1">N1</span>
+      <span class="chip lvl-2">N2</span>
+      <span class="chip lvl-3">N3</span>
+      <span class="chip lvl-4">N4</span>
+      <span class="chip lvl-5">N5</span>
+      <span class="chip lvl-6">N6</span>
+    </div>
+
+    <!-- Nav -->
+    <div class="cal-nav">
+      <button id="calPrev" class="btn outline" aria-label="Mois précédents">◀</button>
+      <div id="calTitle" class="cal-title"></div>
+      <button id="calNext" class="btn outline" aria-label="Mois suivants">▶</button>
+    </div>
+
+    <!-- Deux mois côte à côte -->
+    <div id="calWrap" class="cal-wrap">
+      <!-- Injecté par JS -->
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+<section class="section-tint">
+  <div class="container grid-2">
+    <div class="reveal">
+      <div class="kicker">Tarif & inclus</div>
+      <h2>À partir de 890€</h2>
+      <ul>
+        <li>Hébergement en chambres partagées ou solo (compris draps et serviettes)</li>
+        <li>4 sorties encadrées running et/ou marche en fonction du niveau</li>
+        <li>3 conférences / ateliers</li>
+        <li>Accès piscine chauffée, bain froid et autres installations de la maison</li>
+        <li>Pension complète & collations</li>
+        <li>parking voiture et navette depuis la gare</li>
+      </ul>
+    </div>
+
+    <!-- FORMULAIRE -->
+    <div class="card reveal">
+      <h3 style="margin:0 0 6px;">Demande de renseignement</h3>
+      <p class="muted" style="margin-bottom:10px">Remplissez ce formulaire : nous vous répondons rapidement.</p>
+
+      <!-- Version simple : mailto (ouvre le logiciel mail) -->
+      <form action="mailto:contact@courir-autrement.fr" method="post" enctype="text/plain">
+        <div style="display:grid;gap:10px;grid-template-columns:1fr 1fr">
+          <div>
+            <label for="nom">Nom</label>
+            <input id="nom" name="Nom" required style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--beige-200)">
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="Email" type="email" required style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--beige-200)">
+          </div>
+          <div style="grid-column:1/-1">
+            <label for="message">Message</label>
+            <textarea id="message" name="Message" rows="5" placeholder="Vos dates préférées, votre niveau, vos questions…" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--beige-200)"></textarea>
+          </div>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn" type="submit">Envoyer ma demande</button>
+            <a class="btn outline" href="inscription.html">M’inscrire</a>
+        </div>
+
+      </form>
+
+      <!-- OPTION sans logiciel mail (Formspree) :
+      <form action="https://formspree.io/f/xxxxxxx" method="POST">
+        <input type="text" name="Nom" required>
+        <input type="email" name="Email" required>
+        <textarea name="Message"></textarea>
+        <button class="btn" type="submit">Envoyer</button>
+      </form>
+      Remplace https://formspree.io/f/xxxxxxx par ton endpoint une fois créé.
+      -->
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <div class="container footgrid">
+    <div>
+      <h3 style="color:var(--white);margin:0 0 5px;">Running & Connaissances</h3>
+      <span style="color:color-mix(in srgb,var(--white) 85%, transparent);">Courir, respirer, échanger.</span><br>
+      <span style="color:color-mix(in srgb,var(--white) 85%, transparent);">Une parenthèse pour progresser.</span>
+    </div>
+
+    <div>
+      <h4 style="margin:0 0 10px;">Navigation</h4>
+      <p>
+        <a href="philosophie.html">Philosophie</a> ·
+        <a href="experience.html">L’expérience</a> ·
+        <a href="programme.html">Programme</a> ·
+        <a href="lieu.html">Le lieu</a> ·
+        <a href="equipe.html">L’équipe</a>
+      </p>
+    </div>
+
+  <div class="footer-contact">
+  <div>
+    <h4 style="margin:0 0 10px;">Contact</h4>
+    <p>
+      <a href="mailto:runningconnaissances@gmail.com">runningconnaissances@gmail.com</a><br/>
+      Tel 01 XX XX XX XX
+    </p>
+  </div>
+    <img src="images/logo.png" class="footer-logo">
+  </div>
+  </div>
+</footer>
+<script src="script.js"></script>
+
+</body>
+</html>
