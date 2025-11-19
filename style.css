@@ -678,7 +678,7 @@ body {
     left: 0;
     right: 0;
     height: 72px;
-    z-index: 1001;
+    z-index: 10000;
     background: var(--beige-50);
     box-shadow: 0 4px 18px rgba(0,0,0,.06);
     backdrop-filter: none;
@@ -746,7 +746,7 @@ body {
     gap: 1.5rem;
     padding: 0;
     border-bottom: none;
-    background: #2563eb;
+    background: transparent;
   }
 
   .nav-cta {
