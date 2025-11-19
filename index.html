@@ -8,19 +8,24 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-page="accueil">
-    <header class="site-header" id="siteHeader" aria-label="Navigation principale">
-  <div class="container nav">
-    <a href="index.html" class="brand" aria-label="Accueil">
-      <span class="logo" aria-hidden="true"></span>
-      <span>Running & Connaissances</span>
+     <header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      Running &amp; Connaissances
     </a>
-    <nav aria-label="Sections">
-      <a href="philosophie.html" data-page="philosophie">Philosophie</a>
-      <a href="experience.html" data-page="experience">L’expérience</a>
-      <a href="programme.html" data-page="programme">Programme</a>
-      <a href="lieu.html" data-page="lieu">Le lieu</a>
-      <a href="equipe.html" data-page="equipe">L’équipe</a>
-      <a href="infos.html" class="btn outline" data-page="infos">Découvrir l’expérience</a>
+
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+      <span class="sr-only">Ouvrir le menu</span>
+      ☰
+    </button>
+
+    <nav id="site-nav" class="site-nav">
+      <a href="philosophie.html">Philosophie</a>
+      <a href="experience.html">L’expérience</a>
+      <a href="programme.html">Programme</a>
+      <a href="lieu.html">Le lieu</a>
+      <a href="equipe.html">L’équipe</a>
+      <a href="infos.html" class="nav-cta">Découvrir l’expérience</a>
     </nav>
   </div>
 </header>
@@ -58,7 +63,7 @@
   <div class="container grid-2">
     <div class="reveal">
       <div class="kicker">Notre philosophie</div>
-      <h2>Mieux se connaitre pour mieux courir</h2>
+      <h2>Mieux se connaître pour mieux courir</h2>
       <p class="muted">Ici, on conjugue Plaisir, Connaissances et Partage. On remet du sens dans le mouvement, on respire, on écoute et comprend le corps.</p>
       <p style="margin-top:10px"><a class="btn outline" href="philosophie.html">Lire la philosophie</a></p>
     </div>
@@ -128,13 +133,8 @@
       Tel 01 XX XX XX XX
     </p>
   </div>
-
-  <img src="images/logo.png" class="footer-logo">
-</div>
-
-
-  
-
+    <img src="images/logo.png" class="footer-logo">
+  </div>
   </div>
 </footer>
 

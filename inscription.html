@@ -27,19 +27,24 @@
 <body data-page="infos">
 
 <!-- Header (identique aux autres pages) -->
-<header class="site-header" id="siteHeader" aria-label="Navigation principale">
-  <div class="container nav">
-    <a href="index.html" class="brand" aria-label="Accueil">
-      <span class="logo" aria-hidden="true"></span>
-      <span>Running & Connaissances</span>
+ <header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      Running &amp; Connaissances
     </a>
-    <nav aria-label="Sections">
-      <a href="philosophie.html" data-page="philosophie">Philosophie</a>
-      <a href="experience.html" data-page="experience">L’expérience</a>
-      <a href="programme.html" data-page="programme">Programme</a>
-      <a href="lieu.html" data-page="lieu">Le lieu</a>
-      <a href="equipe.html" data-page="equipe">L’équipe</a>
-      <a href="infos.html" class="btn outline" data-page="infos">Infos</a>
+
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+      <span class="sr-only">Ouvrir le menu</span>
+      ☰
+    </button>
+
+    <nav id="site-nav" class="site-nav">
+      <a href="philosophie.html">Philosophie</a>
+      <a href="experience.html">L’expérience</a>
+      <a href="programme.html">Programme</a>
+      <a href="lieu.html">Le lieu</a>
+      <a href="equipe.html">L’équipe</a>
+      <a href="infos.html" class="nav-cta">Découvrir l’expérience</a>
     </nav>
   </div>
 </header>
