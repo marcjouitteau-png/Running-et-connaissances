@@ -598,11 +598,6 @@ body {
 
 
 
-
-
-
-
-
 .header-inner {
   display: flex;
   align-items: center;
@@ -708,5 +703,52 @@ body {
     padding: 0.4rem 0.9rem;
     border-radius: 999px;
     border: 1px solid #ffffff;
+  }
+}
+
+/* === Spécifique mobile : header toujours accessible === */
+@media (max-width: 768px) {
+
+  /* Le header reste collé en haut quand on scrolle */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: color-mix(in srgb, var(--white) 94%, transparent);
+    box-shadow: 0 4px 18px rgba(0,0,0,.08);
+    backdrop-filter: saturate(120%) blur(10px);
+  }
+
+  /* On laisse un peu de place au contenu sous le header */
+  body {
+    padding-top: 72px;
+  }
+
+  /* Le menu déroulant se colle juste sous le header fixe */
+  .site-nav {
+    position: fixed;
+    inset: 72px 0 0 0;   /* top = hauteur du header */
+    display: none;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem 1.5rem;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .site-nav.open {
+    display: flex;
+  }
+
+  /* Liens lisibles sur fond blanc */
+  .site-nav a,
+  .nav-cta {
+    color: #111827;
+  }
+
+  .nav-cta {
+    border: 1px solid #111827;
   }
 }
