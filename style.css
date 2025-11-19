@@ -709,11 +709,7 @@ body {
     flex-direction: column;
     gap: 1rem;
 
-    /* Fallback pour les navigateurs qui ne gèrent pas color-mix */
-    background: var(--green-200);
-
-    /* Variante “jolie” pour les navigateurs modernes */
-    background: color-mix(in srgb, var(--green-200) 28%, var(--white) 72%);
+    background: rgba(0, 255, 0, 0.9);
     border: none;
     box-shadow: none;
     z-index: 10000;
