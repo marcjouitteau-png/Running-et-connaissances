@@ -454,9 +454,40 @@ input.time-mask:invalid{ border-color: var(--danger); background:#ffeaea; }
 
 .calendar{background:#fff;border:1px solid #e6e6e6;border-radius:16px;overflow:hidden}
 .calendar .month-head{display:flex;justify-content:center;align-items:center;padding:10px 12px;font-weight:700;background:#faf8f4}
-.calendar .grid{display:grid;grid-template-columns:repeat(7,1fr)}
+
+.calendar {
+  width: 100%;
+}
+
+.calendar .grid{
+  display:grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));  /* colonnes qui se compressent */
+}
 .calendar .dow{padding:8px 6px;text-align:center;font-weight:600;font-size:.9rem;background:#f5f5f5;border-bottom:1px solid #eee}
-.calendar .cell{min-height:88px;border-bottom:1px solid #f0f0f0;border-right:1px solid #f7f7f7;padding:6px;position:relative}
+
+.calendar .cell{
+  min-height:88px;
+  min-width: 0;                                      /* empêche la cellule d’élargir la grille */
+  border-bottom:1px solid #f0f0f0;
+  border-right:1px solid #f7f7f7;
+  padding:6px;
+  position:relative;}
+.event{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:22px;
+  padding:4px 6px;
+  border-radius:8px;
+  font-weight:600;
+  font-size:.8rem;
+  color:#fff;
+  cursor:pointer;
+  max-width: 100%;          /* ne dépasse pas de la cellule */
+  flex-wrap: wrap;          /* le texte peut passer sur 2 lignes */
+}
+
+
 .calendar .cell:nth-child(7n){border-right:none}
 .calendar .date{position:absolute;top:6px;left:8px;font-size:.8rem;color:#64748b}
 
