@@ -698,34 +698,31 @@ body {
   }
 
   /* Panneau vert clair qui MASQUE la page, sous le header */
+@media (max-width: 768px) {
   .site-nav {
-  position: fixed;
-  top: 72px;
-  left: 0;
-  right: 0;
-  bottom: 0;
+    position: fixed;
+    top: 72px;          /* sous le header */
+    left: 0;
+    right: 0;
 
-  /* s’assurer couverture complète */
-  width: 100%;
-  height: calc(100% - 72px); /* facultatif s’il y a déjà bottom:0 */
+    /* 👇 le point important */
+    height: calc(100vh - 72px); /* toute la hauteur de l'écran sous le header */
 
-  padding: 1.25rem 1.5rem 2rem;
-  display: none;
-  flex-direction: column;
-  gap: 1rem;
+    padding: 1.25rem 1.5rem 2rem;
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
 
-  background: #e8f6ed;  /* ta couleur fixe */
-  /* OU si tu veux légère transparence */
-  /* background: rgba(232, 246, 237, 0.95); */
-
-  border: none;
-  box-shadow: none;
-  z-index: 9999;
-}
+    background: #e8f6ed; /* ta couleur fixe */
+    border: none;
+    box-shadow: none;
+    z-index: 9999;
+  }
 
   .site-nav.open {
     display: flex;
   }
+}
 
   /* Liens du menu : noirs, lisibles */
   .site-nav a {
