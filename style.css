@@ -505,6 +505,97 @@ input.time-mask:invalid{ border-color: var(--danger); background:#ffeaea; }
   }
 }
 
+/* === OVERRIDES DE NETTOYAGE GLOBAL === */
+
+/* 1. Base : texte sombre par défaut partout */
+body {
+  color: var(--ink);
+  background: var(--white);
+}
+
+/* 2. Hero : texte blanc sur l'image uniquement */
+.hero,
+.hero h1,
+.hero h2,
+.hero h3,
+.hero p,
+.hero .kicker {
+  color: #ffffff;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Les overlays du hero ne bloquent ni les clics ni le texte */
+.hero::before,
+.hero::after {
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 3. Header au-dessus de tout et cliquable */
+.site-header {
+  position: absolute;   /* au-dessus du hero */
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  z-index: 1000;
+}
+
+/* On s'assure que rien ne désactive ses clics */
+.site-header,
+.site-header * {
+  pointer-events: auto;
+}
+
+/* Couleurs du header quand il flotte sur le hero (début de page) */
+.site-header .logo,
+.site-header .site-nav a,
+.site-header .nav-cta {
+  color: #ffffff;
+}
+
+.site-header .nav-cta {
+  border-color: #ffffff;
+}
+
+/* 4. Header "visible" après scroll : fond clair + texte foncé */
+.site-header.visible {
+  background: color-mix(in srgb, var(--white) 95%, transparent);
+  box-shadow: 0 6px 24px rgba(0,0,0,.06);
+  backdrop-filter: saturate(120%) blur(10px);
+}
+
+.site-header.visible .logo,
+.site-header.visible .site-nav a,
+.site-header.visible .nav-cta {
+  color: var(--ink);
+}
+
+.site-header.visible .nav-cta {
+  border-color: var(--ink);
+}
+
+/* 5. Menu mobile : fond blanc + texte foncé (lisible) */
+@media (max-width: 767px) {
+  .site-nav {
+    background: #ffffff;
+  }
+
+  .site-nav a,
+  .site-header.visible .site-nav a {
+    color: #111827;
+  }
+
+  .nav-cta {
+    border-color: #111827;
+    color: #111827;
+  }
+}
+
 
 
 
