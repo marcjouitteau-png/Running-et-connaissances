@@ -1,9 +1,5 @@
 
 
-
-
-
-
 // Header qui apparaît au scroll
 const header = document.getElementById('siteHeader');
 const hero = document.querySelector('.hero');
@@ -280,23 +276,6 @@ document.querySelectorAll('nav a[data-page]').forEach(a=>{
 //})();
 
 
-// ----- Masque h:mm:ss (compact) -----
-(function(){
-  const f = (raw)=>{const d=(raw||'').replace(/\D/g,'').slice(0,6),L=d.length;
-    if(!L) return ''; if(L<=2) return d; if(L<=4) return d.slice(0,L-2)+':'+d.slice(L-2);
-    return d.slice(0,L-4)+':'+d.slice(L-4,L-2)+':'+d.slice(L-2);
-  };
-  document.querySelectorAll('input.time-mask').forEach(el=>{
-    el.addEventListener('input',e=>{ e.target.value=f(e.target.value); });
-    el.addEventListener('blur',e=>{
-      const v=e.target.value, d=v.replace(/\D/g,''); if(!v) return;
-      let norm=f(d); const parts=norm.split(':');
-      if(parts.length===2) norm+=':00';
-      if(parts.length===1) norm=d+':00:00';
-      e.target.value=norm;
-    });
-  });
-})();
 
 // ----- Outils temps -----
 const parseHMS = (s)=>{
@@ -668,109 +647,113 @@ try {
     calWrap.appendChild(renderMonth(m2, evMap));
   }
 
-  function renderMonth(firstOfMonth, evMap){
-    const y = firstOfMonth.getFullYear();
-    const m = firstOfMonth.getMonth();
-    const total = daysInMonth(y,m);
+  function renderMonth(firstOfMonth, evMap) {
+  const y = firstOfMonth.getFullYear();
+  const m = firstOfMonth.getMonth();
+  const total = daysInMonth(y, m);
 
-    // Calculer décalage pour commencer sur LUNDI
-    const jsDow = new Date(y,m,1).getDay(); // 0=dim,1=lun...
-    const offset = (jsDow + 6) % 7; // 0 si lundi, 6 si dimanche
+  // Calculer décalage pour commencer sur LUNDI
+  const jsDow = new Date(y, m, 1).getDay(); // 0=dim,1=lun...
+  const offset = (jsDow + 6) % 7; // 0 si lundi, 6 si dimanche
 
-    // conteneur
-    const cal = document.createElement('div');
-    cal.className = 'calendar';
+  // conteneur
+  const cal = document.createElement('div');
+  cal.className = 'calendar';
 
-    // entête mois
-    const head = document.createElement('div');
-    head.className = 'month-head';
-    head.textContent = `${moisFr[m]} ${y}`;
-    cal.appendChild(head);
+  // entête mois
+  const head = document.createElement('div');
+  head.className = 'month-head';
+  head.textContent = `${moisFr[m]} ${y}`;
+  cal.appendChild(head);
 
-    // grille
-    const grid = document.createElement('div');
-    grid.className = 'grid';
+  // grille
+  const grid = document.createElement('div');
+  grid.className = 'grid';
 
-    // DOW
-    dowFr.forEach(d=>{
-      const el = document.createElement('div');
-      el.className = 'dow'; el.textContent = d; grid.appendChild(el);
-    });
+  // DOW
+  dowFr.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'dow';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
 
-    // cases vides avant le 1er
-    for(let i=0;i<offset;i++){
-      const empty = document.createElement('div');
-      empty.className = 'cell'; grid.appendChild(empty);
-    }
+  // cases vides avant le 1er
+  for (let i = 0; i < offset; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'cell';
+    grid.appendChild(empty);
+  }
 
-    // jours
-    for(let day=1; day<=total; day++){
-      const cell = document.createElement('div'); cell.className='cell';
-      const dateEl = document.createElement('span'); dateEl.className='date'; dateEl.textContent = day;
-      cell.appendChild(dateEl);
+  // jours
+  for (let day = 1; day <= total; day++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
 
-      const dStr = fmtDate(new Date(y,m,day));
-      const events = evMap.get(dStr) || [];
-      // on affiche max 2 pastilles, puis "+n" si plus
-      events.slice(0,2).forEach(ev=>{
-        const tag = document.createElement('button');
-        tag.type = 'button';
-        tag.className = `event lvl-${ev.level}`;
-        tag.innerHTML = `<small>N${ev.level}</small> ${ev.title}`;
-        tag.setAttribute('aria-label', `${ev.title}, niveau ${ev.level}`);
-        // Tooltip
-        const tip = document.createElement('div');
-        tip.className = 'tooltip';
+    const dateEl = document.createElement('span');
+    dateEl.className = 'date';
+    dateEl.textContent = day;
+    cell.appendChild(dateEl);
+
+    const dStr = fmtDate(new Date(y, m, day));
+    const events = evMap.get(dStr) || [];
+
+    // on affiche max 2 pastilles, puis "+n" si plus
+    events.slice(0, 2).forEach(ev => {
+      const tag = document.createElement('button');
+      tag.type = 'button';
+      tag.className = `event lvl-${ev.level}`;
+      tag.innerHTML = `<small>N${ev.level}</small> ${ev.title}`;
+      tag.setAttribute('aria-label', `${ev.title}, niveau ${ev.level}`);
+
       // Génération du lien avec paramètres dans l’URL
-        const qs = new URLSearchParams({
-          title: ev.title,
-          level: String(ev.level),
-          start: ev.start,
-           end: ev.end
-        }).toString();
+      const qs = new URLSearchParams({
+        title: ev.title,
+        level: String(ev.level),
+        start: ev.start,
+        end: ev.end
+      }).toString();
 
-        tip.innerHTML = `
-          <div class="t-title">${ev.title} <span class="chip lvl-${ev.level}" style="font-size:.75rem">N${ev.level}</span></div>
-          <div class="t-meta">${formatRange(ev.start, ev.end)} · ${ev.lieu || ''}</div>
-          <div class="t-desc">${ev.desc || ''}</div>
-           ${ev.link ? `<div style="margin-top:6px"><a href="${ev.link}?${qs}">S’inscrire à ce séminaire</a></div>` : '' }
-`;
+      // URL cible : soit le lien défini dans ev.link, soit la page Infos avec ancre
+      const baseUrl = ev.link || "infos.html#formulaire";
+      const targetUrl = baseUrl.includes("?") ? `${baseUrl}&${qs}` : `${baseUrl}?${qs}`;
 
-        cell.appendChild(tag);
-        cell.appendChild(tip);
+      // Clic = aller au formulaire
+      const goToForm = () => {
+        window.location.href = targetUrl;
+      };
 
-        // hover + click (mobile)
-        tag.addEventListener('mouseenter', ()=>cell.classList.add('show'));
-        tag.addEventListener('mouseleave', ()=>cell.classList.remove('show'));
-        tag.addEventListener('click', (e)=>{
-          // toggle mobile
-          const open = cell.classList.contains('show');
-          document.querySelectorAll('.calendar .cell.show').forEach(c=>c.classList.remove('show'));
-          if(!open) cell.classList.add('show');
-          e.stopPropagation();
-        });
+      tag.addEventListener("click", (e) => {
+        e.preventDefault();
+        goToForm();
       });
 
-      if(events.length > 2){
-        const more = document.createElement('div');
-        more.style.marginTop = '6px';
-        more.style.fontSize = '.8rem';
-        more.style.color = '#475569';
-        more.textContent = `+${events.length-2} autres`;
-        cell.appendChild(more);
-      }
+      // Accessibilité clavier
+      tag.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          goToForm();
+        }
+      });
 
-      grid.appendChild(cell);
-    }
-
-    // fermer tooltips au clic hors
-    document.addEventListener('click', ()=> {
-      document.querySelectorAll('.calendar .cell.show').forEach(c=>c.classList.remove('show'));
+      cell.appendChild(tag);
     });
 
-    cal.appendChild(grid);
-    return cal;
+    if (events.length > 2) {
+      const more = document.createElement('div');
+      more.style.marginTop = '6px';
+      more.style.fontSize = '.8rem';
+      more.style.color = '#475569';
+      more.textContent = `+${events.length - 2} autres`;
+      cell.appendChild(more);
+    }
+
+    grid.appendChild(cell);
   }
+
+  cal.appendChild(grid);
+  return cal;
+}
 
   function formatRange(a,b){
     const da = new Date(a+"T00:00:00"), db = new Date(b+"T00:00:00");

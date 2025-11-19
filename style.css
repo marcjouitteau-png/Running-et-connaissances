@@ -509,18 +509,7 @@ input.time-mask:invalid{ border-color: var(--danger); background:#ffeaea; }
   font-weight:700;
   color:#fff;
 }
-/* Tooltip (hover / click) */
-.tooltip{
-  position:absolute; z-index:5; inset:auto auto 6px 6px; /* coin bas-gauche */
-  background:#111827; color:#fff; padding:10px 12px; border-radius:10px; width:min(280px,92%);
-  box-shadow:0 8px 20px rgba(0,0,0,.15); font-size:.9rem; line-height:1.3; display:none;
-}
-.tooltip .t-title{font-weight:700;margin-bottom:4px}
-.tooltip .t-meta{opacity:.85;margin-bottom:6px}
-.tooltip .t-desc{opacity:.95}
-.tooltip a{color:#fff;text-decoration:underline}
 
-.cell.show .tooltip{display:block}
 
 /* accessibilité focus clavier */
 .event:focus{outline:2px solid #0ea5e9;outline-offset:2px;border-radius:10px}
