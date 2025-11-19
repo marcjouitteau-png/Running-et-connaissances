@@ -34,7 +34,7 @@ a{text-decoration:none;color:inherit}
 img{max-width:100%;display:block;border-radius:var(--radius-2xl)}
 .container{width:min(100% - 32px,var(--container));margin-inline:auto}
 
-..site-header {
+.site-header {
   position: absolute;      /* au-dessus du hero */
   top: 0;
   left: 0;
