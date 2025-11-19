@@ -692,7 +692,7 @@ body {
 
   /* Liens du menu : noirs, lisibles */
   .site-nav a {
-    color: black;
+    color: var(--ink);
     font-size: 1.05rem;
   }
 
@@ -724,5 +724,25 @@ body {
     padding: 0.4rem 0.9rem;
     border-radius: 999px;
     border: 1px solid #ffffff;
+  }
+}
+
+/* === OVERRIDE MOBILE : texte du header et du menu en noir === */
+@media (max-width: 768px) {
+
+  /* Logo + liens du header */
+  .site-header .logo,
+  .site-header .site-nav a,
+  .site-header .nav-cta {
+    color: #111827 !important;  /* noir lisible */
+  }
+
+  .site-header .nav-cta {
+    border-color: #111827 !important;
+  }
+
+  /* Liens à l'intérieur du panneau menu */
+  .site-nav a {
+    color: #111827 !important;
   }
 }
