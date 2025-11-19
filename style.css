@@ -709,6 +709,7 @@ body {
 /* === Spécifique mobile : header toujours accessible === */
 /* === MOBILE : menu plein écran vert clair === */
 /* === MOBILE : header fixe + menu vert clair lisible === */
+
 @media (max-width: 768px) {
 
   /* Header toujours visible en haut, fond beige/vert du site */
@@ -740,25 +741,20 @@ body {
     border-color: var(--ink);
   }
 
-  /* Menu déroulant : panneau vert clair sous le header */
-    /* Menu déroulant : panneau vert clair qui couvre TOUT l'écran */
+  /* Menu déroulant : panneau vert clair sous le header, totalement opaque */
   .site-nav {
     position: fixed;
-    top: 0;
+    top: 72px;              /* commence sous le header */
     left: 0;
     right: 0;
     bottom: 0;
-
-    /* On décale le contenu pour laisser la place au header (72px) + marge */
-    padding: 96px 1.5rem 2rem;
-
+    padding: 1.25rem 1.5rem 2rem;
     display: none;
     flex-direction: column;
     gap: 1rem;
 
-    /* même vert clair que les sections teintées du site */
-    background: var(--section-tint);
-
+    /* vert clair identique aux sections teintées */
+    background: color-mix(in srgb, var(--green-200) 28%, var(--white) 72%);
     border: none;
     box-shadow: none;
     z-index: 900;
@@ -768,7 +764,7 @@ body {
     display: flex;
   }
 
-  /* Liens du menu : texte noir, bien lisible */
+  /* Liens : noir = lisible */
   .site-nav a {
     color: var(--ink);
     font-size: 1.05rem;
@@ -780,3 +776,4 @@ body {
     border: 1px solid var(--ink);
     padding: 0.5rem 1rem;
   }
+}
