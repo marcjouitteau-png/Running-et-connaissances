@@ -551,7 +551,9 @@ body {
   pointer-events: auto;
 }
 
-/* Couleurs du header quand il flotte sur le hero (début de page) */
+/* === HEADER & NAV – VERSION PROPRE === */
+
+/* Couleurs du header quand il flotte sur le hero (desktop) */
 .site-header .logo,
 .site-header .site-nav a,
 .site-header .nav-cta {
@@ -562,42 +564,26 @@ body {
   border-color: #ffffff;
 }
 
-/* 4. Header "visible" après scroll : fond clair + texte foncé */
-.site-header.visible {
-  background: color-mix(in srgb, var(--white) 95%, transparent);
-  box-shadow: 0 6px 24px rgba(0,0,0,.06);
-  backdrop-filter: saturate(120%) blur(10px);
-}
-
-.site-header.visible .logo,
-.site-header.visible .site-nav a,
-.site-header.visible .nav-cta {
-  color: var(--ink);
-}
-
-.site-header.visible .nav-cta {
-  border-color: var(--ink);
-}
-
-/* 5. Menu mobile : fond blanc + texte foncé (lisible) */
-@media (max-width: 767px) {
-  .site-nav {
-    background: #ffffff;
+/* Header "visible" après scroll : fond clair + texte foncé (desktop) */
+@media (min-width: 768px) {
+  .site-header.visible {
+    background: color-mix(in srgb, var(--white) 95%, transparent);
+    box-shadow: 0 6px 24px rgba(0,0,0,.06);
+    backdrop-filter: saturate(120%) blur(10px);
   }
 
-  .site-nav a,
-  .site-header.visible .site-nav a {
-    color: #111827;
+  .site-header.visible .logo,
+  .site-header.visible .site-nav a,
+  .site-header.visible .nav-cta {
+    color: var(--ink);
   }
 
-  .nav-cta {
-    border-color: #111827;
-    color: #111827;
+  .site-header.visible .nav-cta {
+    border-color: var(--ink);
   }
 }
 
-
-
+/* Structure interne du header */
 .header-inner {
   display: flex;
   align-items: center;
@@ -608,44 +594,9 @@ body {
 .logo {
   font-weight: 700;
   text-decoration: none;
-  color: #ffffff;
-}
-
-/* Nav mobile (par défaut) */
-
-.site-nav {
-  position: fixed;
-  inset: 3.25rem 0 auto 0; /* sous le header */
-  display: none;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem 1.5rem 1.25rem;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.site-header .logo { color:#ffffff; }
-
-.site-header.visible .logo,
-.site-header.visible .site-nav a,
-.site-header.visible .nav-cta {
-  color: var(--ink);
-}
-
-.site-header.visible .nav-cta {
-  border-color: var(--ink);
-}
-
-.site-nav a:hover {
-  text-decoration: underline;
-}
-
-.site-nav.open {
-  display: flex;
 }
 
 /* Bouton burger */
-
 .nav-toggle {
   border: 1px solid #e5e7eb;
   border-radius: 999px;
@@ -660,15 +611,7 @@ body {
   outline-offset: 2px;
 }
 
-/* CTA dans la nav */
-
-.nav-cta {
-  font-weight: 600;
-  color: #ffffff
-}
-
 /* Accessibilité texte caché */
-
 .sr-only {
   position: absolute;
   width: 1px;
@@ -681,8 +624,86 @@ body {
   border: 0;
 }
 
-/* Version desktop */
+/* Nav – style générique des liens */
+.site-nav a {
+  text-decoration: none;
+  font-size: 0.95rem;
+}
 
+.site-nav a:hover {
+  text-decoration: underline;
+}
+
+/* CTA dans la nav */
+.nav-cta {
+  font-weight: 600;
+}
+
+/* ===== MOBILE FIRST : overlay vert clair sous le header ===== */
+@media (max-width: 768px) {
+
+  /* Header fixé en haut, fond beige du site, texte noir */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 72px;
+    z-index: 1001;
+    background: var(--beige-50);
+    box-shadow: 0 4px 18px rgba(0,0,0,.06);
+    backdrop-filter: none;
+  }
+
+  body {
+    padding-top: 72px;
+  }
+
+  .site-header .logo,
+  .site-header .nav-cta {
+    color: var(--ink);
+  }
+
+  .site-header .nav-cta {
+    border-color: var(--ink);
+  }
+
+  /* Panneau vert clair qui MASQUE la page, sous le header */
+  .site-nav {
+    position: fixed;
+    top: 72px;          /* commence sous le header */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1.25rem 1.5rem 2rem;
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+
+    background: color-mix(in srgb, var(--green-200) 28%, var(--white) 72%);
+    border: none;
+    box-shadow: none;
+    z-index: 900;
+  }
+
+  .site-nav.open {
+    display: flex;
+  }
+
+  /* Liens du menu : noirs, lisibles */
+  .site-nav a {
+    color: var(--ink);
+    font-size: 1.05rem;
+  }
+
+  .nav-cta {
+    border-radius: 999px;
+    border: 1px solid var(--ink);
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* ===== DESKTOP : nav horizontale translucide sur l'image ===== */
 @media (min-width: 768px) {
   .nav-toggle {
     display: none;
@@ -703,77 +724,5 @@ body {
     padding: 0.4rem 0.9rem;
     border-radius: 999px;
     border: 1px solid #ffffff;
-  }
-}
-
-/* === Spécifique mobile : header toujours accessible === */
-/* === MOBILE : menu plein écran vert clair === */
-/* === MOBILE : header fixe + menu vert clair lisible === */
-
-@media (max-width: 768px) {
-
-  /* Header toujours visible en haut, fond beige/vert du site */
-  .site-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 72px;
-    z-index: 1001;
-    background: var(--beige-50);
-    box-shadow: 0 4px 18px rgba(0,0,0,.06);
-    backdrop-filter: none;
-  }
-
-  /* On décale le contenu pour ne pas qu'il passe sous le header */
-  body {
-    padding-top: 72px;
-  }
-
-  /* Logo + textes du header en noir pour la lisibilité */
-  .site-header .logo,
-  .site-header .site-nav a,
-  .site-header .nav-cta {
-    color: var(--ink);
-  }
-
-  .site-header .nav-cta {
-    border-color: var(--ink);
-  }
-
-  /* Menu déroulant : panneau vert clair sous le header, totalement opaque */
-  .site-nav {
-    position: fixed;
-    top: 72px;              /* commence sous le header */
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 1.25rem 1.5rem 2rem;
-    display: none;
-    flex-direction: column;
-    gap: 1rem;
-
-    /* vert clair identique aux sections teintées */
-    background: color-mix(in srgb, var(--green-200) 28%, var(--white) 72%);
-    border: none;
-    box-shadow: none;
-    z-index: 900;
-  }
-
-  .site-nav.open {
-    display: flex;
-  }
-
-  /* Liens : noir = lisible */
-  .site-nav a {
-    color: var(--ink);
-    font-size: 1.05rem;
-  }
-
-  .nav-cta {
-    font-weight: 600;
-    border-radius: 999px;
-    border: 1px solid var(--ink);
-    padding: 0.5rem 1rem;
   }
 }
