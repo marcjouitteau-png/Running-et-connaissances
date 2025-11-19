@@ -741,19 +741,24 @@ body {
   }
 
   /* Menu déroulant : panneau vert clair sous le header */
+    /* Menu déroulant : panneau vert clair qui couvre TOUT l'écran */
   .site-nav {
     position: fixed;
-    top: 72px;              /* commence sous le header */
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 1.25rem 1.5rem 2rem;
+
+    /* On décale le contenu pour laisser la place au header (72px) + marge */
+    padding: 96px 1.5rem 2rem;
+
     display: none;
     flex-direction: column;
     gap: 1rem;
 
-    /* même esprit que les zones vert clair du site */
-    background: color-mix(in srgb, var(--green-200) 28%, var(--white) 72%);
+    /* même vert clair que les sections teintées du site */
+    background: var(--section-tint);
+
     border: none;
     box-shadow: none;
     z-index: 900;
@@ -763,7 +768,7 @@ body {
     display: flex;
   }
 
-  /* Liens du menu bien lisibles */
+  /* Liens du menu : texte noir, bien lisible */
   .site-nav a {
     color: var(--ink);
     font-size: 1.05rem;
@@ -775,4 +780,3 @@ body {
     border: 1px solid var(--ink);
     padding: 0.5rem 1rem;
   }
-}
