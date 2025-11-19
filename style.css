@@ -692,7 +692,7 @@ body {
 
   /* Liens du menu : noirs, lisibles */
   .site-nav a {
-    color: var(--ink);
+    color: black;
     font-size: 1.05rem;
   }
 
