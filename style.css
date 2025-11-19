@@ -712,7 +712,7 @@ body {
     background: color-mix(in srgb, var(--green-200) 28%, var(--white) 72%);
     border: none;
     box-shadow: none;
-    z-index: 900;
+    z-index: 9999;
   }
 
   .site-nav.open {
