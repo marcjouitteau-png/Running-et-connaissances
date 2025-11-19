@@ -707,48 +707,59 @@ body {
 }
 
 /* === Spécifique mobile : header toujours accessible === */
+/* === MOBILE : menu plein écran vert clair === */
 @media (max-width: 768px) {
 
-  /* Le header reste collé en haut quand on scrolle */
+  /* Le header reste fixe en haut (logo + burger) */
   .site-header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    height: 72px;
     z-index: 1000;
-    background: color-mix(in srgb, var(--white) 94%, transparent);
-    box-shadow: 0 4px 18px rgba(0,0,0,.08);
-    backdrop-filter: saturate(120%) blur(10px);
+    background: transparent;        /* on garde l'image derrière le header */
+    box-shadow: none;
+    backdrop-filter: none;
   }
 
-  /* On laisse un peu de place au contenu sous le header */
+  /* On laisse de la place au contenu sous le header */
   body {
     padding-top: 72px;
   }
 
-  /* Le menu déroulant se colle juste sous le header fixe */
+  /* Le menu recouvre tout l'écran sous le header */
   .site-nav {
     position: fixed;
-    inset: 72px 0 0 0;   /* top = hauteur du header */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 88px 1.5rem 2rem;      /* 88px pour laisser de la place au header */
     display: none;
     flex-direction: column;
-    gap: 0.75rem;
-    padding: 1rem 1.5rem 1.5rem;
-    background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
+    gap: 1rem;
+
+    /* vert très clair comme le site */
+    background: color-mix(in srgb, var(--green-200) 55%, var(--white) 45%);
+    border: none;
+    box-shadow: none;
   }
 
   .site-nav.open {
     display: flex;
   }
 
-  /* Liens lisibles sur fond blanc */
-  .site-nav a,
-  .nav-cta {
+  /* Liens bien lisibles sur fond vert clair */
+  .site-nav a {
     color: #111827;
+    font-size: 1.05rem;
   }
 
   .nav-cta {
+    font-weight: 600;
+    border-radius: 999px;
     border: 1px solid #111827;
+    padding: 0.5rem 1rem;
   }
 }
