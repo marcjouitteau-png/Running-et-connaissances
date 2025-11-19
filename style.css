@@ -571,7 +571,7 @@ body {
   left: 0;
   right: 0;
   height: 72px;
-  z-index: 100;
+  z-index: 10000;
 }
 
 /* On s'assure que rien ne désactive ses clics */
@@ -678,7 +678,7 @@ body {
     left: 0;
     right: 0;
     height: 72px;
-    z-index: 1001;
+    z-index: 10000;
     background: var(--beige-50);
     box-shadow: 0 4px 18px rgba(0,0,0,.06);
     backdrop-filter: none;
@@ -712,7 +712,7 @@ body {
     background: color-mix(in srgb, var(--green-200) 28%, var(--white) 72%);
     border: none;
     box-shadow: none;
-    z-index: 1001;
+    z-index: 10000;
   }
 
   .site-nav.open {
