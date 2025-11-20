@@ -133,7 +133,7 @@ footer{
   border-top-left-radius:24px;border-top-right-radius:24px
 }
 footer a{color:color-mix(in srgb, var(--white) 95%, transparent)}
-.footgrid{display:grid;gap:24px;grid-template-columns:1.2fr .8fr .8fr}
+.footgrid{display:grid;gap:24px;grid-template-columns:1fr 0.8fr 1fr}
 @media (max-width:960px){ .footgrid{grid-template-columns:1fr} }
 
 .reveal{opacity:0;translate:0 14px;transition:opacity .6s ease, translate .6s ease}
